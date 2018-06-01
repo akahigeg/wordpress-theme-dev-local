@@ -28,7 +28,6 @@ function open_modal_script() {
     jQuery(document).ready(function(){
       jQuery('#titlewrap').append(\" <a href='#' id='open-modal-button' class='button'>モーダルウィンドウを開く</a>\");
       jQuery('#open-modal-button').on('click', function(){ open_modal('" . wp_create_nonce('ajax_modal') . "') });
-      alert('ok');
     });
   </script>
   ";
