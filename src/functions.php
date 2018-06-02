@@ -8,7 +8,13 @@ add_action('admin_enqueue_scripts', 'enqueue_progress_files');
 
 // 指定されたpost_idの投稿の投稿タイプを返す
 function ajax_post_type_by_post_id() {
-  echo get_post_type($_POST['post_id']);
+  if ($_POST['post_type'] != '') {
+    // post_typeがわたってきた場合はそのまま返す
+    echo $_POST['post_type'];
+  } else {
+    // post_idがわたってきた場合は投稿タイプを判別して返す
+    echo get_post_type($_POST['post_id']);
+  }
   die();
 }
 add_action('wp_ajax_ajax_post_type_by_post_id', 'ajax_post_type_by_post_id');
