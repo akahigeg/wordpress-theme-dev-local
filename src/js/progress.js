@@ -12,7 +12,7 @@ jQuery(document).ready(function(){
   for (let key in progress_items) {
     // プログレスバーの要素を追加
     let progress_name = key + '-progress'
-    $('#progress-panel').append('<li id="' + progress_name + '" class=""><span class="item">' + progress_items[key]['label'] + '</span> <span id="' + key + '-help-button" class="help-button" > ? </span></li>');
+    $('#progress-panel').append('<li id="' + progress_name + '" class="empty"><span class="item">' + progress_items[key]['label'] + '</span> <span id="' + key + '-help-button" class="help-button" > ? </span></li>');
 
     // ヘルプボタン
     $('#' + key + '-help-button').hover(
@@ -37,32 +37,44 @@ jQuery(document).ready(function(){
   var timer = setInterval(function(){
     // タイトル
     if ($('input[name="post_title"]').val() != '') {
+        $('#post_title-progress').removeClass('empty');
         $('#post_title-progress').addClass('done');
     } else {
+        $('#post_title-progress').addClass('empty');
         $('#post_title-progress').removeClass('done');
+        
     }
 
     // 本文
     // ビジュアルモードのiframeからテキストモードのテキストエリアに同期されるのが10秒おきっぽい そのため本文反映が少し遅れる
     if ($('textarea[name="content"]').val() != '' || $('#content_ifr').contents().find('body').text() != '') {
+        $('#content-progress').removeClass('empty');
         $('#content-progress').addClass('done');
     } else {
+        $('#content-progress').addClass('empty');
         $('#content-progress').removeClass('done');
     }
 
     // タグ
     if ($('ul.tagchecklist li').length > 0) {
+        $('#tag-progress').removeClass('empty');
         $('#tag-progress').addClass('done');
     } else {
+        $('#tag-progress').addClass('empty');
         $('#tag-progress').removeClass('done');
     }
 
     // カテゴリー
     if ($('ul.categorychecklist :checked').length > 0) {
+        $('#category-progress').removeClass('empty');
         $('#category-progress').addClass('done');
     } else {
+        $('#category-progress').addClass('empty');
         $('#category-progress').removeClass('done');
     }
+
+    $('#progress-panel li span.item').css('animation', '');
+    $('#progress-panel li[class="empty"]:first span.item').css('animation', 'arrow 1.2s infinite');
 
   }, 1000);
 

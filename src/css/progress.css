@@ -10,8 +10,8 @@ ul.progress-panel li {
 
   vertical-align: middle;
 
-  background-color: #333;
-  border: 1px solid #333;
+  background-color: #666;
+  border: 1px solid #666;
   color: #fff;
   text-align: center;
   padding: 10px 20px 10px 30px;
@@ -42,19 +42,10 @@ ul.progress-panel li:first-child {
   margin-right: 10px;
 }
 
-ul.progress-panel li span.item::before {
-  position: absolute;
-  top: 50%;
-  left: .3em;
-  content: '';
-  margin-top: -5px;
-  margin-left: -15px;
-  border: 7px solid transparent;
-  border-top-width: 5px;
-  border-bottom-width: 5px;
-  border-left-color: #f00;
-  transition: all .3s;
-  animation: arrow 1.2s infinite;
+ul.progress-panel li.next {
+  background-color: gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
 }
 
 ul.progress-panel li.done {
@@ -65,10 +56,10 @@ ul.progress-panel li.done {
 
 @keyframes arrow {
   50% {
-    left: -.05em;
+    top: .15em;
   }
   100% {
-    left: .3em;
+    top: -.3em;
   }
 }
 
