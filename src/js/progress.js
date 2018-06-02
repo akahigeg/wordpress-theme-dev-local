@@ -1,5 +1,13 @@
 jQuery(document).ready(function(){
-  $('#titlewrap').before('<div><ul id="progress-panel" class="progress-panel"></ul></div>');
+  // 投稿の新規追加もしくは編集画面以外では表示しない
+  if (location.pathname != '/wp-admin/post-new.php' && location.pathname != '/wp-admin/post.php') {
+    return;
+  }
+
+
+  $('h1.wp-heading-inline').css('padding-top', '60px');
+
+  $('#screen-meta-links').before('<div><ul id="progress-panel" class="progress-panel"></ul></div>');
   $('#progress-panel').append('<li id="guide-header">入力ガイド</li>');
 
   var progress_items = {
@@ -32,10 +40,8 @@ jQuery(document).ready(function(){
     );
   }
 
-
   // 毎秒チェック
   var timer = setInterval(function(){
-    let next;
     // タイトル
     if ($('input[name="post_title"]').val() != '') {
       get_progress($('#post_title-progress'));
@@ -64,10 +70,6 @@ jQuery(document).ready(function(){
     } else {
       lost_progress($('#category-progress'));
     }
-
-    $('#progress-panel li span.item').css('animation', '');
-    // $('#progress-panel li[class="empty"]:first span.item').css('animation', 'arrow 1.2s infinite');
-
   }, 1000);
 });
 

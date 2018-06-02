@@ -1,7 +1,9 @@
 ul.progress-panel {
+  position: fixed;
   table-layout: fixed;
+  top: 30;
   width: 100%;
-  border: 1px solid #eee;
+  z-index: 999990;
 }
 
 ul.progress-panel li {
@@ -57,7 +59,7 @@ ul.progress-panel li.done {
 
 @keyframes bgcolor_to_lost {
   0% {
-    background-color: #999;
+    background-color: #ccc;
   }
   100% {
     background-color: #666;
@@ -81,5 +83,5 @@ ul.progress-panel li.done {
   left: 0px;
   margin: auto;
   background-color: #fff;
-  z-index: 99999;
+  z-index: 999999;
 }
