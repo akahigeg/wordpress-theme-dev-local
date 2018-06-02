@@ -35,48 +35,50 @@ jQuery(document).ready(function(){
 
   // 毎秒チェック
   var timer = setInterval(function(){
+    let next;
     // タイトル
     if ($('input[name="post_title"]').val() != '') {
-        $('#post_title-progress').removeClass('empty');
-        $('#post_title-progress').addClass('done');
+      get_progress($('#post_title-progress'));
     } else {
-        $('#post_title-progress').addClass('empty');
-        $('#post_title-progress').removeClass('done');
-        
+      lost_progress($('#post_title-progress'));
     }
 
     // 本文
     // ビジュアルモードのiframeからテキストモードのテキストエリアに同期されるのが10秒おきっぽい そのため本文反映が少し遅れる
     if ($('textarea[name="content"]').val() != '' || $('#content_ifr').contents().find('body').text() != '') {
-        $('#content-progress').removeClass('empty');
-        $('#content-progress').addClass('done');
+      get_progress($('#content-progress'));
     } else {
-        $('#content-progress').addClass('empty');
-        $('#content-progress').removeClass('done');
+      lost_progress($('#content-progress'));
     }
 
     // タグ
     if ($('ul.tagchecklist li').length > 0) {
-        $('#tag-progress').removeClass('empty');
-        $('#tag-progress').addClass('done');
+      get_progress($('#tag-progress'));
     } else {
-        $('#tag-progress').addClass('empty');
-        $('#tag-progress').removeClass('done');
+      lost_progress($('#tag-progress'));
     }
 
     // カテゴリー
     if ($('ul.categorychecklist :checked').length > 0) {
-        $('#category-progress').removeClass('empty');
-        $('#category-progress').addClass('done');
+      get_progress($('#category-progress'));
     } else {
-        $('#category-progress').addClass('empty');
-        $('#category-progress').removeClass('done');
+      lost_progress($('#category-progress'));
     }
 
     $('#progress-panel li span.item').css('animation', '');
-    $('#progress-panel li[class="empty"]:first span.item').css('animation', 'arrow 1.2s infinite');
+    // $('#progress-panel li[class="empty"]:first span.item').css('animation', 'arrow 1.2s infinite');
 
   }, 1000);
-
-  
 });
+
+function get_progress(selector) {
+  selector.removeClass('empty');
+  selector.css('animation', 'bgcolor_to_gain 1.2s');
+  selector.addClass('done');
+}
+
+function lost_progress(selector) {
+  selector.addClass('empty');
+  selector.removeClass('done');
+  selector.css('animation', 'bgcolor_to_lost 1.2s');
+}

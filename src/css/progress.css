@@ -11,7 +11,6 @@ ul.progress-panel li {
   vertical-align: middle;
 
   background-color: #666;
-  border: 1px solid #666;
   color: #fff;
   text-align: center;
   padding: 10px 20px 10px 30px;
@@ -39,19 +38,30 @@ ul.progress-panel li:first-child {
     color: #666;
     padding-left: 20px;
     font-weight: bold;
+  border: 1px solid #666;
   margin-right: 10px;
-}
-
-ul.progress-panel li.next {
-  background-color: gray;
-  border-left: 1px solid gray;
-  border-right: 1px solid gray;
 }
 
 ul.progress-panel li.done {
   background-color: green;
-  border-left: 1px solid green;
-  border-right: 1px solid green;
+}
+
+@keyframes bgcolor_to_gain {
+  0% {
+    background-color: #efe;
+  }
+  100% {
+    background-color: green;
+  }
+}
+
+@keyframes bgcolor_to_lost {
+  0% {
+    background-color: #999;
+  }
+  100% {
+    background-color: #666;
+  }
 }
 
 @keyframes arrow {
