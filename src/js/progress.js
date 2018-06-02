@@ -5,7 +5,7 @@ jQuery(document).ready(function(){
   var progress_items = {
     'post_title': { label: 'タイトル', tag: 'input' },
     'content': { label: '本文', tag: 'textarea' },
-    'newtag\[post_tag\]': { label: 'タグ', tag: 'input' },
+    'tag': { label: 'タグ', tag: 'input' },
     'post_category\[\]': { label: 'カテゴリー', tag: 'input' },
     
   }
@@ -14,27 +14,34 @@ jQuery(document).ready(function(){
   for (let key in progress_items) {
     let progress_name = key + '-progress'
     $('#progress-panel').append('<li id="' + progress_name + '" class=""><span class="item">' + progress_items[key]['label'] + '</span> <span class="help-button" > ? </span></li>');
-
-    $(progress_items[key]['tag'] + '[name="' + key + '"]').on('change', function(){
-      console.log($(this).val())
-      console.log(key + '-progress')
-      if ($(this).val() != '') {
-        $('#' + progress_name).addClass('done');
-      } else {
-        console.log('removed')
-        $('#' + progress_name).removeClass('done');
-      }
-    });
   }
+  // tagchecklist
 
   // 毎秒チェック
   var timer = setInterval(function(){
-    // console.log($('textarea[name="content"]').val());
-    console.log($('#content_ifr').contents().find('body').text());
-    if ($('textarea[name="content"]').val() == '' || $('#content_ifr').contents().find('body').text() == '') {
-        $('#content-progress').removeClass('done');
+    // タイトル
+    console.log($('input[name="post_title"]').val());
+    if ($('input[name="post_title"]').val() != '') {
+        $('#post_title-progress').addClass('done');
     } else {
+        $('#post_title-progress').removeClass('done');
+    }
+
+    // 本文
+    console.log($('#content_ifr').contents().find('body').text());
+    // ビジュアルモードのiframeからテキストモードのテキストエリアに同期されるのが10秒おきっぽい そのため本文反映が少し遅れる
+    if ($('textarea[name="content"]').val() != '' || $('#content_ifr').contents().find('body').text() != '') {
         $('#content-progress').addClass('done');
+    } else {
+        $('#content-progress').removeClass('done');
+    }
+
+    // タグ
+    console.log($('ul.tagchecklist li').length);
+    if ($('ul.tagchecklist li').length > 0) {
+        $('#tag-progress').addClass('done');
+    } else {
+        $('#tag-progress').removeClass('done');
     }
 
   }, 1000);
