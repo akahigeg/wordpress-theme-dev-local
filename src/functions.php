@@ -22,7 +22,14 @@ function ajax_post_type_by_post_id() {
 add_action('wp_ajax_ajax_post_type_by_post_id', 'ajax_post_type_by_post_id');
 
 function ajax_guide_html() {
-  echo "<h1>HTMLじゃい</h1>";
+  $template_file = get_stylesheet_directory() . '/guide/' . $_POST['item_key'] . '.html';
+  if (file_exists($template_file)) {
+    $html = file_get_contents($template_file);
+  } else {
+    $html = $template_file;
+  }
+
+  echo $html;
   die();
 }
 add_action('wp_ajax_ajax_guide_html', 'ajax_guide_html');
@@ -30,7 +37,7 @@ add_action('wp_ajax_ajax_guide_html', 'ajax_guide_html');
 /**
  * 入力ガイド機能
  * - [OK] ヘルプボタンを押すと入力項目に関するヘルプを表示 モーダルウィンドウで表示する
- * - [] ヘルプの内容をテンプレートから読み込んで表示 iframeの中に
+ * - [OK] ヘルプの内容をテンプレートから読み込んで表示
  * - [OK] タイマーで全ての入力欄を監視し、入力されたものはグリーンに
  * - [OK] 画面上部にfixで表示
  * - [OK] ガイドを画面上部か下部に固定

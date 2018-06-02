@@ -116,34 +116,41 @@ function buildProgressGuide(post_type) {
   for (let key in progress_items) {
     // ガイドバーの要素を追加
     let progress_name = key + '-progress'
-    $('#progress-panel').append('<li id="' + progress_name + '" class="empty"><span class="item">' + progress_items[key]['label'] + '</span> <span id="' + key + '-help-button" class="help-button" > ? </span></li>');
+    let label;
+    if (progress_items[key]['required']) {
+      label = '<ruby>' + progress_items[key]['label'] + '<rt>required</rt></ruby>';
+    } else {
+      label = progress_items[key]['label'];
+    }
+    $('#progress-panel').append('<li id="' + progress_name + '" class="empty"><span class="item">' + label + '</span> <span id="' + key + '-help-button" class="help-button" > ? </span></li>');
 
     // ヘルプボタン クリックでモーダル表示
     $('#' + key + '-help-button').on('click', function(){
-      openGuideModal();
+      openGuideModal(key);
     });
   }
 }
 
-function openGuideModal() {
-  jQuery.ajax({
+function openGuideModal(item_key) {
+  $.ajax({
     type: 'POST',
     url: ajaxurl,
     data: {
-        'action': 'ajax_guide_html'
+        'action': 'ajax_guide_html',
+        'item_key': item_key
     },
     success: function(html) {
-      jQuery('body').append('<div id="modal-background" class="modal-background"></div>');
-      jQuery('body').append('<div id="modal" class="modal"><div id="modal-container" class="modal-container">' + html + '</div></div>');
-      jQuery('#modal').css('left', (window.innerWidth - 800) / 2);
+      $('body').append('<div id="modal-background" class="modal-background"></div>');
+      $('body').append('<div id="modal" class="modal"><div id="modal-container" class="modal-container">' + html + '</div></div>');
+      $('#modal').css('left', (window.innerWidth - 800) / 2);
 
-      jQuery('#modal-container').append('<div id="modal-ok" class="modal-ok button">OK</div>');
-      jQuery('#modal-background').on('click', function(){ 
-        jQuery('#modal').remove(); jQuery('#modal-background').remove(); 
+      $('#modal-container').append('<div id="modal-ok" class="modal-ok button">OK</div>');
+      $('#modal-background').on('click', function(){ 
+        $('#modal').remove(); $('#modal-background').remove(); 
       });
 
-      jQuery('#modal-ok').on('click', function(){ 
-        jQuery('#modal').remove(); jQuery('#modal-background').remove(); 
+      $('#modal-ok').on('click', function(){ 
+        $('#modal').remove(); $('#modal-background').remove(); 
       });
     }
   });
@@ -153,10 +160,10 @@ function openGuideModal() {
 function getGuideItems(post_type) {
   items = {
     'post': {
-      'post_title': { label: 'タイトル', tag: 'input', type: 'text' },
-      'content': { label: '本文', tag: 'textarea' },
+      'post_title': { label: 'タイトル', tag: 'input', type: 'text', required: true },
+      'content': { label: '本文', tag: 'textarea', required: true },
       'tag': { label: 'タグ', tag: 'input' },
-      'category': { label: 'カテゴリー', tag: 'input' },
+      'category': { label: 'カテゴリー', tag: 'input', required: true },
     },
     'page': {
       'post_title': { label: 'タイトル', tag: 'input', type: 'text' },

@@ -35,6 +35,14 @@ span.help-button {
     margin-left: 0px;
 }
 
+li rt {
+  color: red;
+}
+
+li.done rt {
+  color: green;
+}
+
 ul.progress-panel li:first-child {
     background-color: #eee;
     color: #666;
