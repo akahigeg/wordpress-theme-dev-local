@@ -1,0 +1,73 @@
+ul.progress-panel {
+  table-layout: fixed;
+  width: 100%;
+  border: 1px solid #eee;
+}
+
+ul.progress-panel li {
+  position: relative;
+  display: inline-block;
+
+  vertical-align: middle;
+
+  background-color: #333;
+  border: 1px solid #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 20px 10px 30px;
+  text-decoration: none;
+}
+
+ul.progress-panel li span.item {
+  position: relative;
+}
+
+span.help-button {
+    background-color: #999;
+    color: #eee;
+    border-radius: 100%;
+    border: #ddd 1px solid;
+    padding: 0 4px;
+    margin-top: -5px;
+    top: 50%;
+    font-size: smaller;
+    margin-left: 0px;
+}
+
+ul.progress-panel li:first-child {
+    background-color: #eee;
+    color: #666;
+    padding-left: 20px;
+    font-weight: bold;
+  margin-right: 10px;
+}
+
+ul.progress-panel li span.item::before {
+  position: absolute;
+  top: 50%;
+  left: .3em;
+  content: '';
+  margin-top: -5px;
+  margin-left: -15px;
+  border: 7px solid transparent;
+  border-top-width: 5px;
+  border-bottom-width: 5px;
+  border-left-color: #f00;
+  transition: all .3s;
+  animation: arrow 1.2s infinite;
+}
+
+ul.progress-panel li.done {
+  background-color: green;
+  border-left: 1px solid green;
+  border-right: 1px solid green;
+}
+
+@keyframes arrow {
+  50% {
+    left: -.05em;
+  }
+  100% {
+    left: .3em;
+  }
+}
