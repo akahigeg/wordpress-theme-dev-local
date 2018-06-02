@@ -120,9 +120,33 @@ function buildProgressGuide(post_type) {
 
     // ヘルプボタン クリックでモーダル表示
     $('#' + key + '-help-button').on('click', function(){
-
+      openGuideModal();
     });
   }
+}
+
+function openGuideModal() {
+  jQuery.ajax({
+    type: 'POST',
+    url: ajaxurl,
+    data: {
+        'action': 'ajax_guide_html'
+    },
+    success: function(html) {
+      jQuery('body').append('<div id="modal-background" class="modal-background"></div>');
+      jQuery('body').append('<div id="modal" class="modal"><div id="modal-container" class="modal-container">' + html + '</div></div>');
+      jQuery('#modal').css('left', (window.innerWidth - 800) / 2);
+
+      jQuery('#modal-container').append('<div id="modal-ok" class="modal-ok button">OK</div>');
+      jQuery('#modal-background').on('click', function(){ 
+        jQuery('#modal').remove(); jQuery('#modal-background').remove(); 
+      });
+
+      jQuery('#modal-ok').on('click', function(){ 
+        jQuery('#modal').remove(); jQuery('#modal-background').remove(); 
+      });
+    }
+  });
 }
 
 // 投稿タイプごとに入力ガイドに表示するアイテムを取得
