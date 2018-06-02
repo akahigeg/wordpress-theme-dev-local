@@ -6,7 +6,7 @@ jQuery(document).ready(function(){
     'post_title': { label: 'タイトル', tag: 'input' },
     'content': { label: '本文', tag: 'textarea' },
     'tag': { label: 'タグ', tag: 'input' },
-    'post_category\[\]': { label: 'カテゴリー', tag: 'input' },
+    'category': { label: 'カテゴリー', tag: 'input' },
     
   }
 
@@ -20,7 +20,6 @@ jQuery(document).ready(function(){
   // 毎秒チェック
   var timer = setInterval(function(){
     // タイトル
-    console.log($('input[name="post_title"]').val());
     if ($('input[name="post_title"]').val() != '') {
         $('#post_title-progress').addClass('done');
     } else {
@@ -28,7 +27,6 @@ jQuery(document).ready(function(){
     }
 
     // 本文
-    console.log($('#content_ifr').contents().find('body').text());
     // ビジュアルモードのiframeからテキストモードのテキストエリアに同期されるのが10秒おきっぽい そのため本文反映が少し遅れる
     if ($('textarea[name="content"]').val() != '' || $('#content_ifr').contents().find('body').text() != '') {
         $('#content-progress').addClass('done');
@@ -37,11 +35,17 @@ jQuery(document).ready(function(){
     }
 
     // タグ
-    console.log($('ul.tagchecklist li').length);
     if ($('ul.tagchecklist li').length > 0) {
         $('#tag-progress').addClass('done');
     } else {
         $('#tag-progress').removeClass('done');
+    }
+
+    // カテゴリー
+    if ($('ul.categorychecklist :checked').length > 0) {
+        $('#category-progress').addClass('done');
+    } else {
+        $('#category-progress').removeClass('done');
     }
 
   }, 1000);
