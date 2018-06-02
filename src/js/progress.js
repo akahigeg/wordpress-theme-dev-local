@@ -57,9 +57,15 @@ function initPostGuide() {
         }
 
         let progress_items = getGuideItems(post_type);
+        let publish_disabled = false;
         for (let key in progress_items) {
           progress(key, progress_items[key]);
+          if (progress_items[key]['required'] && !($('#' + key + '-progress').hasClass('done'))) {
+            publish_disabled = true;
+          }
         }
+
+        $('#publish').prop('disabled', publish_disabled);
       }, 1000);
     }
   });
