@@ -71,3 +71,14 @@ ul.progress-panel li.done {
     left: .3em;
   }
 }
+
+.help-block {
+  position: fixed;
+  width: 300px;
+  height: 150px;
+  top: -50px;
+  left: 0px;
+  margin: auto;
+  background-color: #fff;
+  z-index: 99999;
+}

@@ -7,15 +7,31 @@ jQuery(document).ready(function(){
     'content': { label: '本文', tag: 'textarea' },
     'tag': { label: 'タグ', tag: 'input' },
     'category': { label: 'カテゴリー', tag: 'input' },
-    
   }
-
 
   for (let key in progress_items) {
+    // プログレスバーの要素を追加
     let progress_name = key + '-progress'
-    $('#progress-panel').append('<li id="' + progress_name + '" class=""><span class="item">' + progress_items[key]['label'] + '</span> <span class="help-button" > ? </span></li>');
+    $('#progress-panel').append('<li id="' + progress_name + '" class=""><span class="item">' + progress_items[key]['label'] + '</span> <span id="' + key + '-help-button" class="help-button" > ? </span></li>');
+
+    // ヘルプボタン
+    $('#' + key + '-help-button').hover(
+      function(e) {
+        console.log($('#help-block').length == 0);
+        
+        if ($('#help-block').length == 0) {
+          $('body').append('<div id="help-block" class="help-block">' + key + '</div>');
+          let help_block = $('#help-block')
+          help_block.css('top', e.clientY);
+          help_block.css('left', e.clientX);
+        }
+      },
+      function(e) {
+        $('#help-block').remove();
+      }
+    );
   }
-  // tagchecklist
+
 
   // 毎秒チェック
   var timer = setInterval(function(){
