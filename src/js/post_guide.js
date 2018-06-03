@@ -8,6 +8,7 @@ jQuery(document).ready(function () {
   initPostGuide();
 });
 
+// ガイドの初期化と構築
 function initPostGuide() {
   // 投稿タイプの取得
   let post_type;
@@ -47,7 +48,7 @@ function initPostGuide() {
     },
     success: function (wp_post_type) {
       post_type = wp_post_type
-      buildProgressGuide(post_type);
+      buildPostGuide(post_type);
 
       // 毎秒チェックを開始
       var timer = setInterval(function () {
@@ -56,88 +57,93 @@ function initPostGuide() {
           return;
         }
 
-        let progress_items = getGuideItems(post_type);
+        let guide_items = getGuideItems(post_type);
         let publish_disabled = false;
-        for (let key in progress_items) {
-          progress(key, progress_items[key]);
-          if (progress_items[key]['required'] && !($('#' + key + '-progress').hasClass('done'))) {
+        for (let key in guide_items) {
+          watchProgress(key, guide_items[key]);
+          if (guide_items[key]['required'] && !($('#' + key + '-guide').hasClass('done'))) {
             publish_disabled = true;
           }
         }
 
+        // doneになってないrequiredの項目がひとつでもあれば公開ボタンをdisabledに そうでなければdisabledは解除される
         $('#publish').prop('disabled', publish_disabled);
       }, 1000);
     }
   });
 }
 
-function progress(key, items) {
-  // テキストインプット
+// 入力状態の監視と、状態に応じたガイドの表示の変更
+function watchProgress(key, items) {
+  // テキストインプットの場合
   if (items['tag'] == 'input' && items['type'] && items['type'] == 'text') {
     if ($('input[name="' + key + '"]').val() != '') {
-      gainProgress($('#' + key + '-progress'));
+      gainProgress($('#' + key + '-guide'));
     } else {
-      lostProgress($('#' + key + '-progress'));
+      lostProgress($('#' + key + '-guide'));
     }
   }
 
-  // 本文
+  // 本文の場合
   if (key == 'content') {
     // ビジュアルモードのiframeからテキストモードのテキストエリアに同期されるのが10秒おきっぽい そのため本文反映が少し遅れる
     if ($('textarea[name="content"]').val() != '' || $('#content_ifr').contents().find('body').text() != '') {
-      gainProgress($('#content-progress'));
+      gainProgress($('#content-guide'));
     } else {
-      lostProgress($('#content-progress'));
+      lostProgress($('#content-guide'));
     }
   }
 
-  // タグ
+  // タグの場合
   if ($('ul.tagchecklist li').length > 0) {
-    gainProgress($('#tag-progress'));
+    gainProgress($('#tag-guide'));
   } else {
-    lostProgress($('#tag-progress'));
+    lostProgress($('#tag-guide'));
   }
 
-  // カテゴリー
+  // カテゴリーの場合
   if ($('ul.categorychecklist :checked').length > 0) {
-    gainProgress($('#category-progress'));
+    gainProgress($('#category-guide'));
   } else {
-    lostProgress($('#category-progress'));
+    lostProgress($('#category-guide'));
   }
 
 }
 
-// ガイドバーの構築
-function buildProgressGuide(post_type) {
-  $('#screen-meta-links').before('<div><ul id="progress-panel" class="progress-panel"></ul></div>');
-  $('#progress-panel').append('<li id="guide-header">入力ガイド</li>');
+// ガイドの構築
+function buildPostGuide(post_type) {
+  console.log('build');
+  $('#screen-meta-links').before('<div><ul id="post-guide-panel" class="post-guide-panel"></ul></div>');
+  $('#post-guide-panel').append('<li id="guide-header">投稿ガイド</li>');
 
   // ガイドバーを表示する分、スペースを空ける
   $('h1.wp-heading-inline').css('padding-top', '60px');
 
   console.log(post_type);
 
-  let progress_items = getGuideItems(post_type);
+  let guide_items = getGuideItems(post_type);
 
-  for (let key in progress_items) {
+  for (let key in guide_items) {
     // ガイドバーの要素を追加
-    let progress_name = key + '-progress'
+    let guide_name = key + '-guide'
     let label;
-    if (progress_items[key]['required']) {
-      label = '<ruby>' + progress_items[key]['label'] + '<rt>required</rt></ruby>';
+    if (guide_items[key]['required']) {
+      // 必須項目の場合はルビで表示
+      label = '<ruby>' + guide_items[key]['label'] + '<rt>required</rt></ruby>';
     } else {
-      label = progress_items[key]['label'];
+      label = guide_items[key]['label'];
     }
-    $('#progress-panel').append('<li id="' + progress_name + '" class="empty"><span class="item">' + label + '</span> <span id="' + key + '-help-button" class="help-button" > ? </span></li>');
+    $('#post-guide-panel').append('<li id="' + guide_name + '" class="empty"><span class="item">' + label + '</span> <span id="' + key + '-help-button" class="help-button" > ? </span></li>');
 
     // ヘルプボタン クリックでモーダル表示
     $('#' + key + '-help-button').on('click', function(){
-      openGuideModal(key);
+      openGuideHelpModal(key);
     });
   }
 }
 
-function openGuideModal(item_key) {
+// ヘルプをAJAXで読み込みモーダルで表示
+function openGuideHelpModal(item_key) {
   $.ajax({
     type: 'POST',
     url: ajaxurl,
@@ -150,12 +156,12 @@ function openGuideModal(item_key) {
       $('body').append('<div id="modal" class="modal"><div id="modal-container" class="modal-container">' + html + '</div></div>');
       $('#modal').css('left', (window.innerWidth - 800) / 2);
 
-      $('#modal-container').append('<div id="modal-ok" class="modal-ok button">OK</div>');
+      $('#modal-container').append('<div id="modal-close" class="modal-close">×</div>');
       $('#modal-background').on('click', function(){ 
         $('#modal').remove(); $('#modal-background').remove(); 
       });
 
-      $('#modal-ok').on('click', function(){ 
+      $('#modal-close').on('click', function(){ 
         $('#modal').remove(); $('#modal-background').remove(); 
       });
     }

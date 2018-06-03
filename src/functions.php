@@ -1,12 +1,10 @@
 <?php
 // 管理画面にCSSとJSの読み込みを追加
-function enqueue_progress_files() {
-  wp_enqueue_style('progress-style' , get_stylesheet_directory_uri() . '/css/progress.css');
-  wp_enqueue_script('progress-js' , get_stylesheet_directory_uri() . '/js/progress.js');
-
-  wp_enqueue_style('modal-style' , get_stylesheet_directory_uri() . '/css/modal.css');
+function enqueue_post_guide_files() {
+  wp_enqueue_style('post-guide-style' , get_stylesheet_directory_uri() . '/css/post_guide.css');
+  wp_enqueue_script('post-guide-js' , get_stylesheet_directory_uri() . '/js/post_guide.js');
 }
-add_action('admin_enqueue_scripts', 'enqueue_progress_files');
+add_action('admin_enqueue_scripts', 'enqueue_post_guide_files');
 
 // 指定されたpost_idの投稿の投稿タイプを返す
 function ajax_post_type_by_post_id() {
@@ -21,18 +19,18 @@ function ajax_post_type_by_post_id() {
 }
 add_action('wp_ajax_ajax_post_type_by_post_id', 'ajax_post_type_by_post_id');
 
-function ajax_guide_html() {
-  $template_file = get_stylesheet_directory() . '/guide/' . $_POST['item_key'] . '.html';
-  if (file_exists($template_file)) {
-    $html = file_get_contents($template_file);
+function ajax_post_guide_html() {
+  $guide_content_path = get_stylesheet_directory() . '/post_guide/' . $_POST['item_key'] . '.html';
+  if (file_exists($guide_content_path)) {
+    $html = file_get_contents($guide_content_path);
   } else {
-    $html = $template_file;
+    $html = $guide_content;
   }
 
   echo $html;
   die();
 }
-add_action('wp_ajax_ajax_guide_html', 'ajax_guide_html');
+add_action('wp_ajax_ajax_post_guide_html', 'ajax_post_guide_html');
 
 /**
  * 入力ガイド機能

@@ -1,4 +1,4 @@
-ul.progress-panel {
+ul.post-guide-panel {
   position: fixed;
   table-layout: fixed;
   top: 30;
@@ -6,7 +6,7 @@ ul.progress-panel {
   z-index: 88888;
 }
 
-ul.progress-panel li {
+ul.post-guide-panel li {
   position: relative;
   display: inline-block;
 
@@ -19,7 +19,7 @@ ul.progress-panel li {
   text-decoration: none;
 }
 
-ul.progress-panel li span.item {
+ul.post-guide-panel li span.item {
   position: relative;
 }
 
@@ -43,7 +43,7 @@ li.done rt {
   color: green;
 }
 
-ul.progress-panel li:first-child {
+ul.post-guide-panel li:first-child {
     background-color: #eee;
     color: #666;
     padding-left: 20px;
@@ -52,7 +52,7 @@ ul.progress-panel li:first-child {
   margin-right: 10px;
 }
 
-ul.progress-panel li.done {
+ul.post-guide-panel li.done {
   background-color: green;
 }
 
@@ -81,4 +81,61 @@ ul.progress-panel li.done {
   100% {
     top: -.3em;
   }
+}
+
+.modal {
+  position: fixed;
+  width: 800px;
+  height: 600px;
+  top: 50px;
+  margin: auto;
+  background-color: #fff;
+  z-index: 99999;
+  border: 2px solid gray;
+  overflow-y: scroll;
+}
+
+.modal-container {
+  position: relative;
+  margin: auto;
+  width: 85%;
+  height: 90%;
+  color: #000;
+  padding: 30px;
+}
+
+.modal-background {
+  position: fixed;
+  width: 100%;
+  height: 150%;
+  top: -50px;
+  left: 0px;
+  background-color: #fff;
+  z-index: 99990;
+  opacity: 0.5;
+}
+
+.modal-list {
+  overflow:auto;
+  width: 600px;
+  height: 500px;
+}
+
+.modal-new {
+  text-align: right;
+  position: absolute;
+  bottom: 130px;
+  right: 90px;
+}
+
+.modal-close {
+  text-align: right;
+  position: absolute;
+  padding: 3px 10px 5px 10px;
+  top: 0px;
+  right: -10px;
+  background-color: gray;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
 }
